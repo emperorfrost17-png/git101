@@ -47,13 +47,39 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
+          <!--The data-* attribute is used to store custom data private to the page or application. It has to start with 'data' the name seperated with dashes-->
             Add to Cart
           </button>
         </div>` 
       
 })
 
-console.log(productsHTML)
+
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML
+
+ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  button.addEventListener('click', () => {
+ const productId = button.dataset.productId//makes the property camelCase even though i wrote product-name it joins it and write it in camel Case 
+
+ let matchingItem;
+  cart.forEach((item) => {
+    if (productId === item.productId) {
+      matchingItem = item
+    }
+    })
+    if (matchingItem) {
+      matchingItem.quantity+= 1
+    }
+    else {
+      cart.push({
+      productId: productId,
+      quantity: 1
+    
+    })
+  }
+    
+    console.log(cart)
+  })
+ })
