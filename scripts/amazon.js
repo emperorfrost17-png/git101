@@ -42,7 +42,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart js-added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -59,15 +59,13 @@ products.forEach((product) => {
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML
 
+let timeoutId;
+
  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
  const productId = button.dataset.productId//makes the property camelCase even though i wrote product-name it joins it and write it in camel Case 
 
- const addedToCart = document.querySelector('.js-added-to-cart')
  
- if(document.querySelectorAll('.js-add-to-cart')) {
-  
- }
 
     const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
 
@@ -93,6 +91,17 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML
     cartQuantity += item.quantity
   })
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
+  const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
+ 
+ 
+ addedToCart.classList.add('added-to-cart-message');
+
+ 
+
+ clearTimeout(timeoutId)
+ timeoutId = setTimeout(() => {
+    addedToCart.classList.remove('added-to-cart-message')
+  }, 2000);
 
   })
  })
