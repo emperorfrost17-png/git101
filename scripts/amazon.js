@@ -59,7 +59,7 @@ products.forEach((product) => {
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML
 
-let timeoutId;
+const addedMessageTimeouts = {}
 
  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
@@ -96,9 +96,13 @@ let timeoutId;
  
  addedToCart.classList.add('added-to-cart-message');
 
- 
+ const previousTimeoutId= addedMessageTimeouts[productId]
 
- clearTimeout(timeoutId)
+ if(previousTimeoutId) {
+  clearTimeout(previousTimeoutId)
+ }
+
+ 
  timeoutId = setTimeout(() => {
     addedToCart.classList.remove('added-to-cart-message')
   }, 2000);
