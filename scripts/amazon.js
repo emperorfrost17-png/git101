@@ -1,4 +1,15 @@
+//This is called a module i couldn't use the cart variable in this file because cart.js was already using it (with const) so i got the variable out of the cart.js using module
 
+//These are the steps
+
+//1. You add a type="module" attribute to the script file you want to use 
+//2.export the variable you want to use in the other script file
+//3. import the variable you exported and also use "from '' " inside the qoutation marks you put the file path
+
+
+//NB: You have to put all the imports at the top of the file 
+
+import {cart} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
 
 let productsHTML = ''
 
