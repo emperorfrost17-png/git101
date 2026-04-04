@@ -11,6 +11,8 @@
 
 import {cart} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
 
+import {products} from '../data/products.js'
+
 let productsHTML = ''
 
 products.forEach((product) => {
