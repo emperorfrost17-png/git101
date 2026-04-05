@@ -69,24 +69,11 @@ products.forEach((product) => {
 })
 
 
-
-document.querySelector('.js-products-grid').innerHTML = productsHTML
-
-const addedMessageTimeout = {}
-
- document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-  button.addEventListener('click', () => {
- const productId = button.dataset.productId//makes the property camelCase even though i wrote product-name it joins it and write it in camel Case 
-
- 
-
-    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
-
-   const quantity = Number(quantitySelector.value) 
- let matchingItem;
-  cart.forEach((item) => {
-    if (productId === item.productId) {
-      matchingItem = item
+function addToCart (productId, quantity) {
+let matchingItem;
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem
     }
     })
     if (matchingItem) {
@@ -99,25 +86,43 @@ const addedMessageTimeout = {}
     
     })
   }
-  let cartQuantity = 0
+}
+
+function updateCartQuantity () {
+let cartQuantity = 0
   cart.forEach((item) => {
     cartQuantity += item.quantity
   })
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
-  const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
+}
+
+document.querySelector('.js-products-grid').innerHTML = productsHTML
+
+const addedMessageTimeout = {}
+
+ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  button.addEventListener('click', () => {
+ const productId = button.dataset.productId//makes the property camelCase even though i wrote product-name it joins it and write it in camel Case 
+    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
+   const quantity = Number(quantitySelector.value) 
+   addToCart(productId, quantity)
  
+   updateCartQuantity()
+  
+ 
+  const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
  
  addedToCart.classList.add('added-to-cart-message');
 
  const previousTimeout = addedMessageTimeout[productId]
  if (previousTimeout) {
-  clearTimeout(previousTimeoutId)
+  clearTimeout(previousTimeout)
  }
 
  
 const timeoutId = setTimeout(() => {
     addedToCart.classList.remove('added-to-cart-message')
-  }, 2000);
-
+  }, 1000);
+  addedMessageTimeout[productId] = timeoutId
   })
  })
