@@ -1,4 +1,17 @@
+//This is called a module i couldn't use the cart variable in this file because cart.js was already using it (with const) so i got the variable out of the cart.js using module
 
+//These are the steps
+
+//1. You add a type="module" attribute to the script file you want to use 
+//2.export the variable you want to use in the other script file
+//3. import the variable you exported and also use "from '' " inside the qoutation marks you put the file path
+
+
+//NB: You have to put all the imports at the top of the file 
+
+import {cart} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
+
+import {products} from '../data/products.js'
 
 let productsHTML = ''
 
@@ -56,6 +69,7 @@ products.forEach((product) => {
 })
 
 
+<<<<<<< HEAD
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML
 
@@ -74,6 +88,13 @@ const addedMessageTimeouts = {}
   cart.forEach((item) => {
     if (productId === item.productId) {
       matchingItem = item
+=======
+function addToCart (productId, quantity) {
+let matchingItem;
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem
+>>>>>>> f0896161a9d00a91fda45723aba5ec5b7b7ab4ae
     }
     })
     if (matchingItem) {
@@ -86,16 +107,35 @@ const addedMessageTimeouts = {}
     
     })
   }
-  let cartQuantity = 0
+}
+
+function updateCartQuantity () {
+let cartQuantity = 0
   cart.forEach((item) => {
     cartQuantity += item.quantity
   })
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
-  const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
+}
+
+document.querySelector('.js-products-grid').innerHTML = productsHTML
+
+const addedMessageTimeout = {}
+
+ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  button.addEventListener('click', () => {
+ const productId = button.dataset.productId//makes the property camelCase even though i wrote product-name it joins it and write it in camel Case 
+    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
+   const quantity = Number(quantitySelector.value) 
+   addToCart(productId, quantity)
  
+   updateCartQuantity()
+  
+ 
+  const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
  
  addedToCart.classList.add('added-to-cart-message');
 
+<<<<<<< HEAD
  const previousTimeoutId= addedMessageTimeouts[productId]
 
  if(previousTimeoutId) {
@@ -104,8 +144,17 @@ const addedMessageTimeouts = {}
 
  
  timeoutId = setTimeout(() => {
-    addedToCart.classList.remove('added-to-cart-message')
-  }, 2000);
+=======
+ const previousTimeout = addedMessageTimeout[productId]
+ if (previousTimeout) {
+  clearTimeout(previousTimeout)
+ }
 
+ 
+const timeoutId = setTimeout(() => {
+>>>>>>> f0896161a9d00a91fda45723aba5ec5b7b7ab4ae
+    addedToCart.classList.remove('added-to-cart-message')
+  }, 1000);
+  addedMessageTimeout[productId] = timeoutId
   })
  })
