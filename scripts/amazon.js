@@ -7,9 +7,9 @@
 //3. import the variable you exported and also use "from '' " inside the qoutation marks you put the file path
 
 
-//NB: You have to put all the imports at the top of the file 
+//NB: You have to put all the imports at the top of the file and you can put multiple variable or functions in the import curly bracket (don't add brackets after function name in the curly brckets) 
 
-import {cart} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
+import {cart, addToCart} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
 
 import {products} from '../data/products.js'
 
@@ -67,36 +67,17 @@ products.forEach((product) => {
         </div>` 
       
 })
+ 
 
-
-function addToCart (productId, quantity) {
-let matchingItem;
-  cart.forEach((cartItem) => {
-    if (productId === cartItem.productId) {
-      matchingItem = cartItem
-    }
-    })
-    if (matchingItem) {
-      matchingItem.quantity+= quantity
-    }
-    else {
-      cart.push({
-      productId: productId,
-      quantity: quantity
-    
-    })
-  }
-}
+document.querySelector('.js-products-grid').innerHTML = productsHTML
 
 function updateCartQuantity () {
 let cartQuantity = 0
-  cart.forEach((item) => {
-    cartQuantity += item.quantity
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity
   })
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
 }
-
-document.querySelector('.js-products-grid').innerHTML = productsHTML
 
 const addedMessageTimeout = {}
 
