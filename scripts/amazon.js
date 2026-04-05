@@ -69,32 +69,11 @@ products.forEach((product) => {
 })
 
 
-<<<<<<< HEAD
-
-document.querySelector('.js-products-grid').innerHTML = productsHTML
-
-const addedMessageTimeouts = {}
-
- document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-  button.addEventListener('click', () => {
- const productId = button.dataset.productId//makes the property camelCase even though i wrote product-name it joins it and write it in camel Case 
-
- 
-
-    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
-
-   const quantity = Number(quantitySelector.value) 
- let matchingItem;
-  cart.forEach((item) => {
-    if (productId === item.productId) {
-      matchingItem = item
-=======
 function addToCart (productId, quantity) {
 let matchingItem;
   cart.forEach((cartItem) => {
     if (productId === cartItem.productId) {
       matchingItem = cartItem
->>>>>>> f0896161a9d00a91fda45723aba5ec5b7b7ab4ae
     }
     })
     if (matchingItem) {
@@ -135,16 +114,6 @@ const addedMessageTimeout = {}
  
  addedToCart.classList.add('added-to-cart-message');
 
-<<<<<<< HEAD
- const previousTimeoutId= addedMessageTimeouts[productId]
-
- if(previousTimeoutId) {
-  clearTimeout(previousTimeoutId)
- }
-
- 
- timeoutId = setTimeout(() => {
-=======
  const previousTimeout = addedMessageTimeout[productId]
  if (previousTimeout) {
   clearTimeout(previousTimeout)
@@ -152,7 +121,6 @@ const addedMessageTimeout = {}
 
  
 const timeoutId = setTimeout(() => {
->>>>>>> f0896161a9d00a91fda45723aba5ec5b7b7ab4ae
     addedToCart.classList.remove('added-to-cart-message')
   }, 1000);
   addedMessageTimeout[productId] = timeoutId
