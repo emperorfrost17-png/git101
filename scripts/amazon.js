@@ -13,6 +13,8 @@ import {cart, addToCart} from '../data/cart.js'//I used '../' because 'cart.js' 
 
 import {products} from '../data/products.js'
 
+import { formatCurrency } from './utils/money.js'
+
 let productsHTML = ''
 //I created 'productsHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
 
@@ -37,7 +39,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-           $${(product.priceCents / 100).toFixed(2)}<!--.toFixed(2) makes the price have two decimal digits for example 10.9 = 10.90-->
+           $${formatCurrency(product.priceCents)}<!--.toFixed(2) makes the price have two decimal digits for example 10.9 = 10.90-->
           </div>
 
           <div class="product-quantity-container">
