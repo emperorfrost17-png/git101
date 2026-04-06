@@ -1,5 +1,5 @@
 //The reason why we just use the id is because when using id the id will find the rest of the other details like price rating and image etc. That is why we just only use id and quantity this is called normalizing the data
-export const cart = [{
+export let cart = [{
   productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
   quantity: 2
 },
@@ -29,4 +29,16 @@ let matchingItem;
   }
 }
 
+export function removeFromCart(productId) {
+  // This Goes through the cart, keep only the items whose productId does not match, then replace cart with the updated list.
+  const newCart = []
+
+  cart.forEach((cartItem) => {
+    if (cartItem.productId !== productId) {// '!==' means not equal to
+      newCart.push(cartItem)
+    }
+  })
+
+  cart = newCart
+}
  
