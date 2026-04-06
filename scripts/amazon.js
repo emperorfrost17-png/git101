@@ -14,6 +14,7 @@ import {cart, addToCart} from '../data/cart.js'//I used '../' because 'cart.js' 
 import {products} from '../data/products.js'
 
 let productsHTML = ''
+//I created 'productsHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
 
 products.forEach((product) => {
   //incase you forget the only reason why you can use '.id or .rating or .name' is because since you used 'products.forEach((product) => {})' product has become a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff.  Hope you understand
@@ -93,10 +94,12 @@ const addedMessageTimeout = {}
    updateCartQuantity()
   
  
-  const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
+ const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
  
  addedToCart.classList.add('added-to-cart-message');
 
+ // Use [productId] because productId is a variable; this stores a separate timeout for each product id. 
+ // and [productId] also mean “Use the value inside productId as the property name"
  const previousTimeout = addedMessageTimeout[productId]
  if (previousTimeout) {
   clearTimeout(previousTimeout)
