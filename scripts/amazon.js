@@ -9,7 +9,7 @@
 
 //NB: You have to put all the imports at the top of the file and you can put multiple variable or functions in the import curly bracket (don't add brackets after function name in the curly brckets) 
 
-import {cart, addToCart} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
+import {cart, addToCart, calculateCartQuantity} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
 
 import {products} from '../data/products.js'
 
@@ -75,13 +75,11 @@ products.forEach((product) => {
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML
 
+updateCartQuantity()
+
 function updateCartQuantity () {
-let cartQuantity = 0
-  cart.forEach((cartItem) => {
-    //incase you forget the only reason why you can use '.quantity' is because since you used 'cart.forEach((cartItem) => {})' cartItem has become a variable for each individual object in the cart arrays that is why you can use cartItem.quantity and stuff  Hope you understand
-    cartQuantity += cartItem.quantity
-  })
-  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
+const cartQuantity = calculateCartQuantity()
+  document.querySelector('.js-cart-quantity').innerHTML =  `${cartQuantity}`
 }
 
 const addedMessageTimeout = {}

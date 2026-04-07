@@ -52,4 +52,13 @@ export function removeFromCart(productId) {
   cart = newCart
   saveToStorage()
 }
+export function calculateCartQuantity() {
+    
+  let cartQuantity = 0
+  cart.forEach((cartItem) => {
+    //incase you forget the only reason why you can use '.quantity' is because since you used 'cart.forEach((cartItem) => {})' cartItem has become a variable for each individual object in the cart arrays that is why you can use cartItem.quantity and stuff  Hope you understand
+    cartQuantity += cartItem.quantity
+  })
+  return cartQuantity
+}
  
