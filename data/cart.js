@@ -60,5 +60,6 @@ export function calculateCartQuantity() {
     cartQuantity += cartItem.quantity
   })
   return cartQuantity
+  //You need 'return' because there is a calculation inside the function without 'return' calculation result will stay inside the function with 'return' it gives back the value. Hope you understand
 }
  
