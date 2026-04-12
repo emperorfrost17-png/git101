@@ -62,4 +62,15 @@ export function calculateCartQuantity() {
   return cartQuantity
   //You need 'return' because there is a calculation inside the function without 'return' calculation result will stay inside the function with 'return' it gives back the value. Hope you understand
 }
+export function updateQuantity(productId, newQuantity) {
+  let matchingItem;
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem 
+    }
+
+  })
+  matchingItem.quantity = newQuantity
+  saveToStorage()
+}
  
