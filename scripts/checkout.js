@@ -9,6 +9,13 @@ import {products} from '../data/products.js'
 // I used './' because './' means current folder then you find utils folder then you find money.js
 import { formatCurrency } from './utils/money.js'
 
+hello()
+const today = dayjs()
+
+const deliveryDate = today.add(7, 'days')//'.add' takes two values. The number of times we want to add. Second is the length of time we want to ad. So what I did is that I added 7 days to today's date
+
+console.log(deliveryDate.format('dddd, MMMM D'))
+
 let cartSummaryHTML = ''
 //I created 'cartSummaryHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
 cart.forEach((cartItem) => {
