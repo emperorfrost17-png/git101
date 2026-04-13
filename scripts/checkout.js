@@ -9,6 +9,21 @@ import {products} from '../data/products.js'
 // I used './' because './' means current folder then you find utils folder then you find money.js
 import { formatCurrency } from './utils/money.js'
 
+//This is how you import a variable or function form an external library by putting the url in the from '' instead of a file path
+import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'
+
+// Import notes:
+// Use import dayjs from '...' for a default export.
+// Use import { dayjs } from '...' for a named export.
+// dayjs is a default export, so it works without {}.
+// If you use { dayjs }, JavaScript looks for a named export called dayjs.
+// dayjs is not a named export because the library exports one main value as the default export.
+// A named export would be written like export const dayjs = ...
+// But this library is exported like export default dayjs
+// That is why we write import dayjs from '...' and not import { dayjs } from '...'
+
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
+
 hello()
 const today = dayjs()
 
