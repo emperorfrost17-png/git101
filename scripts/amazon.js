@@ -2,25 +2,24 @@
 
 //These are the steps
 
-//1. You add a type="module" attribute to the script file you want to use 
+//1. You add a type="module" attribute to the script file you want to use
 //2.export the variable you want to use in the other script file
 //3. import the variable you exported and also use "from '' " inside the qoutation marks you put the file path
 
+//NB: You have to put all the imports at the top of the file and you can put multiple variable or functions in the import curly bracket (don't add brackets after function name in the curly brckets)
 
-//NB: You have to put all the imports at the top of the file and you can put multiple variable or functions in the import curly bracket (don't add brackets after function name in the curly brckets) 
+import { cart, addToCart, calculateCartQuantity } from "../data/cart.js"; //I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
 
-import {cart, addToCart, calculateCartQuantity} from '../data/cart.js'//I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
+import { products } from "../data/products.js";
 
-import {products} from '../data/products.js'
+import { formatCurrency } from "./utils/money.js";
 
-import { formatCurrency } from './utils/money.js'
-
-let productsHTML = ''
+let productsHTML = "";
 //I created 'productsHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
 
 products.forEach((product) => {
   //incase you forget the only reason why you can use '.id or .rating or .name' is because since you used 'products.forEach((product) => {})' product has become a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff.  Hope you understand
- productsHTML += `<div class="product-container">
+  productsHTML += `<div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
               src="${product.image}">
@@ -68,47 +67,47 @@ products.forEach((product) => {
           <!--The data-* attribute is used to store custom data private to the page or application. It has to start with 'data' the name seperated with dashes-->
             Add to Cart
           </button>
-        </div>` 
-      
-})
- 
+        </div>`;
+});
 
-document.querySelector('.js-products-grid').innerHTML = productsHTML
+document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-updateCartQuantity()
+updateCartQuantity();
 
-function updateCartQuantity () {
-const cartQuantity = calculateCartQuantity()
-  document.querySelector('.js-cart-quantity').innerHTML =  `${cartQuantity}`
+function updateCartQuantity() {
+  const cartQuantity = calculateCartQuantity();
+  document.querySelector(".js-cart-quantity").innerHTML = `${cartQuantity}`;
 }
 
-const addedMessageTimeout = {}
+const addedMessageTimeout = {};
 
- document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-  button.addEventListener('click', () => {
- const productId = button.dataset.productId//makes the property camelCase even though i wrote product-name it joins it and write it in camel Case 
-    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
-   const quantity = Number(quantitySelector.value) 
-   addToCart(productId, quantity)
- 
-   updateCartQuantity()
-  
- 
- const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`)
- 
- addedToCart.classList.add('added-to-cart-message');
+document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+  button.addEventListener("click", () => {
+    const productId = button.dataset.productId; //makes the property camelCase even though i wrote product-name it joins it and write it in camel Case
+    const quantitySelector = document.querySelector(
+      `.js-quantity-selector-${productId}`,
+    );
+    const quantity = Number(quantitySelector.value);
+    addToCart(productId, quantity);
 
- // Use [productId] because productId is a variable; this stores a separate timeout for each product id. 
- // and [productId] also mean “Use the value inside productId as the property name"
- const previousTimeout = addedMessageTimeout[productId]
- if (previousTimeout) {
-  clearTimeout(previousTimeout)
- }
+    updateCartQuantity();
 
- 
-const timeoutId = setTimeout(() => {
-    addedToCart.classList.remove('added-to-cart-message')
-  }, 1000);
-  addedMessageTimeout[productId] = timeoutId
-  })
- })
+    const addedToCart = document.querySelector(
+      `.js-added-to-cart-${productId}`,
+    );
+
+    addedToCart.classList.add("added-to-cart-message");
+
+    // Use [productId] because productId is a variable; this stores a separate timeout for each product id.
+    // and [productId] also mean “Use the value inside productId as the property name"
+    const previousTimeout = addedMessageTimeout[productId];
+    if (previousTimeout) {
+      clearTimeout(previousTimeout);
+    }
+
+    const timeoutId = setTimeout(() => {
+      addedToCart.classList.remove("added-to-cart-message");
+    }, 1000);
+    addedMessageTimeout[productId] = timeoutId;
+  });
+});

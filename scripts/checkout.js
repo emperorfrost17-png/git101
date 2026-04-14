@@ -1,16 +1,17 @@
-import {cart,
-   removeFromCart,
-   calculateCartQuantity,
-    updateQuantity
-  } from '../data/cart.js'
+import {
+  cart,
+  removeFromCart,
+  calculateCartQuantity,
+  updateQuantity,
+} from "../data/cart.js";
 
-import {products} from '../data/products.js'
+import { products } from "../data/products.js";
 
 // I used './' because './' means current folder then you find utils folder then you find money.js
-import { formatCurrency } from './utils/money.js'
+import { formatCurrency } from "./utils/money.js";
 
 //This is how you import a variable or function form an external library by putting the url in the from '' instead of a file path
-import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'
+import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 
 // Import notes:
 // Use import dayjs from '...' for a default export.
@@ -22,33 +23,49 @@ import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'
 // But this library is exported like export default dayjs
 // That is why we write import dayjs from '...' and not import { dayjs } from '...'
 
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
+import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
-hello()
-const today = dayjs()
+import { deliveryOptions } from "../data/deliveryOptions.js";
 
-const deliveryDate = today.add(7, 'days')//'.add' takes two values. The number of times we want to add. Second is the length of time we want to ad. So what I did is that I added 7 days to today's date
+hello();
+const today = dayjs();
 
-console.log(deliveryDate.format('dddd, MMMM D'))
+const deliveryDate = today.add(7, "days"); //'.add' takes two values. The number of times we want to add. Second is the length of time we want to ad. So what I did is that I added 7 days to today's date
 
-let cartSummaryHTML = ''
+console.log(deliveryDate.format("dddd, MMMM D"));
+
+let cartSummaryHTML = "";
 //I created 'cartSummaryHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
 cart.forEach((cartItem) => {
-  const productId = cartItem.productId
+  const productId = cartItem.productId;
 
   let matchingProduct;
 
   products.forEach((product) => {
     //incase you forget the only reason why you can use '.id' is because since you used 'products.forEach((product) => {})' product has becomes a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff  Hope you understand
     if (product.id === productId) {
-      matchingProduct = product
+      matchingProduct = product;
     }
-  })
+  });
 
- cartSummaryHTML += `
+  const deliveryOptionId = cartItem.deliveryOptionId;
+
+  let deliveryOption;
+
+  deliveryOptions.forEach((option) => {
+    if (option.id === deliveryOptionId) {
+      deliveryOption = option;
+    }
+  });
+
+  const today = dayjs();
+  const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+  const dateString = deliveryDate.format("dddd, MMMM D");
+
+  cartSummaryHTML += `
 <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
   <div class="delivery-date">
-    Delivery date: Tuesday, June 21
+    Delivery date: ${dateString}
   </div>
 
   <div class="cart-item-details-grid">
@@ -82,110 +99,115 @@ cart.forEach((cartItem) => {
       <div class="delivery-options-title">
         Choose a delivery option:
       </div>
-      <div class="delivery-option">
-        <input type="radio" checked
-          class="delivery-option-input"
-          name="delivery-option-${matchingProduct.id}">
-        <div>
-          <div class="delivery-option-date">
-            Tuesday, June 21
-          </div>
-          <div class="delivery-option-price">
-            FREE Shipping
-          </div>
-        </div>
+      ${deliveryOptionsHTML(matchingProduct, cartItem)}
       </div>
-      <div class="delivery-option">
-        <input type="radio"
-          class="delivery-option-input"
-          name="delivery-option-${matchingProduct.id}">
-        <div>
-          <div class="delivery-option-date">
-            Wednesday, June 15
-          </div>
-          <div class="delivery-option-price">
-            $4.99 - Shipping
-          </div>
-        </div>
-      </div>
-      <div class="delivery-option">
-        <input type="radio"
-          class="delivery-option-input"
-          name="delivery-option-${matchingProduct.id}">
-        <div>
-          <div class="delivery-option-date">
-            Monday, June 13
-          </div>
-          <div class="delivery-option-price">
-            $9.99 - Shipping
-          </div>
-        </div>
-      </div>
+      
+      
+        
     </div>
   </div>
-</div>
+
 
           
-  `
-})
+  `;
+});
 
-updateCartQuantity()
-document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML
+function deliveryOptionsHTML(matchingProduct, cartItem) {
+  let html = "";
+  deliveryOptions.forEach((deliveryOption) => {
+    const today = dayjs();
+    const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+    const dateString = deliveryDate.format("dddd, MMMM D");
 
-document.querySelectorAll('.js-delete-link').forEach((link) => {
-link.addEventListener('click', () => {
-  const productId = link.dataset.productId
-  removeFromCart(productId)
-  console.log(cart)
-  const container= document.querySelector(`.js-cart-item-container-${productId}`)
+    //This is a ternary  operator = a shortcut to if{} and else{} statements
+    //                              helps to assign a variable based on a condition
+    //                              condition ? codeIfTrue : codeIfFalse
+    const priceString =
+      deliveryOption.priceCents === 0
+        ? "FREE"
+        : `$${formatCurrency(deliveryOption.priceCents)}`;
 
-  container.remove()
-  updateCartQuantity()
-})
-})
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
-function updateCartQuantity() {
- const cartQuantity= calculateCartQuantity()
-
-document.querySelector('.js-return-to-home-link').innerHTML = `${cartQuantity} Items`
-
+    html += `
+    <div class="delivery-option">
+        <input type="radio"
+        ${isChecked ? "checked" : ""}
+          class="delivery-option-input"
+          name="delivery-option-${matchingProduct.id}">
+        <div>
+          <div class="delivery-option-date">
+            ${dateString}
+          </div>
+          <div class="delivery-option-price">
+            ${priceString} - Shipping
+          </div>
+        </div>
+      </div>
+      `;
+  });
+  return html;
 }
 
-document.querySelectorAll('.js-update-link').forEach((link) => {
-  link.addEventListener('click', () => {
-    const productId = link.dataset.productId
-  const container = document.querySelector(`.js-cart-item-container-${productId}`) 
-  container.classList.add('is-editing-quantity')
-  })
-  
-  
-})
-document.querySelectorAll('.js-save-link').forEach((link) => {
-  link.addEventListener('click', () => {
-    const productId = link.dataset.productId
-  
+updateCartQuantity();
+document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
 
-  const quantityInput = document.querySelector(`.js-quantity-input-${productId}`)
-  
-  const newQuantity = Number(quantityInput.value)
-  updateQuantity(productId, newQuantity)
+document.querySelectorAll(".js-delete-link").forEach((link) => {
+  link.addEventListener("click", () => {
+    const productId = link.dataset.productId;
+    removeFromCart(productId);
+    console.log(cart);
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`,
+    );
 
+    container.remove();
+    updateCartQuantity();
+  });
+});
 
-  //This is called an early return so that if it is less than 1 or more than 1000 the code will not run
-  if (newQuantity < 1 || newQuantity >= 1000 ) {
-    alert('Quantity must be atleast 1 and less than 1000')
-    return
-  }
-  
+function updateCartQuantity() {
+  const cartQuantity = calculateCartQuantity();
 
-  const container = document.querySelector(`.js-cart-item-container-${productId}`) 
-  container.classList.remove('is-editing-quantity')
+  document.querySelector(".js-return-to-home-link").innerHTML =
+    `${cartQuantity} Items`;
+}
 
-  const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`)
+document.querySelectorAll(".js-update-link").forEach((link) => {
+  link.addEventListener("click", () => {
+    const productId = link.dataset.productId;
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`,
+    );
+    container.classList.add("is-editing-quantity");
+  });
+});
+document.querySelectorAll(".js-save-link").forEach((link) => {
+  link.addEventListener("click", () => {
+    const productId = link.dataset.productId;
 
-  quantityLabel.innerHTML= newQuantity
-  })
-})
+    const quantityInput = document.querySelector(
+      `.js-quantity-input-${productId}`,
+    );
 
+    const newQuantity = Number(quantityInput.value);
+    updateQuantity(productId, newQuantity);
 
+    //This is called an early return so that if it is less than 1 or more than 1000 the code will not run
+    if (newQuantity < 1 || newQuantity >= 1000) {
+      alert("Quantity must be atleast 1 and less than 1000");
+      return;
+    }
 
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`,
+    );
+    container.classList.remove("is-editing-quantity");
+
+    const quantityLabel = document.querySelector(
+      `.js-quantity-label-${productId}`,
+    );
+
+    quantityLabel.innerHTML = newQuantity;
+  });
+});
