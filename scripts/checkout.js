@@ -3,6 +3,7 @@ import {
   removeFromCart,
   calculateCartQuantity,
   updateQuantity,
+  updateDeliveryOption,
 } from "../data/cart.js";
 
 import { products } from "../data/products.js";
@@ -52,6 +53,9 @@ cart.forEach((cartItem) => {
 
   let deliveryOption;
 
+  // The cart item only stores the chosen delivery option id, so we loop
+  // through deliveryOptions to find the full object and save it in
+  // deliveryOption. After that, we can use properties like deliveryDays.
   deliveryOptions.forEach((option) => {
     if (option.id === deliveryOptionId) {
       deliveryOption = option;
@@ -130,7 +134,7 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
     const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
     html += `
-    <div class="delivery-option">
+    <div class="delivery-option js-delivery-option" data-product-id="${matchingProduct.id}" data-delivery-option-id="${deliveryOption.id}">
         <input type="radio"
         ${isChecked ? "checked" : ""}
           class="delivery-option-input"
@@ -209,5 +213,17 @@ document.querySelectorAll(".js-save-link").forEach((link) => {
     );
 
     quantityLabel.innerHTML = newQuantity;
+  });
+});
+
+document.querySelectorAll(".js-delivery-option").forEach((element) => {
+  //The same thing as this:
+  //const productId = element.dataset.productId;
+  //const deliveryOptionId = element.dataset.deliveryOptionId;
+
+  const { productId, deliveryOptionId } = element.dataset;
+
+  element.addEventListener("click", () => {
+    updateDeliveryOption(productId, deliveryOptionId);
   });
 });
