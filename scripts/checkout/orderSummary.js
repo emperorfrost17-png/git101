@@ -30,13 +30,7 @@ import {
   deliveryOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
-
-hello();
-const today = dayjs();
-
-const deliveryDate = today.add(7, "days"); //'.add' takes two values. The number of times we want to add. Second is the length of time we want to ad. So what I did is that I added 7 days to today's date
-
-console.log(deliveryDate.format("dddd, MMMM D"));
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 /*
 I put all the code below in a function so that when for example using the delivery options because i put all the code in a function i can just regenerate the HTML using the function i used (renderOrderSummary) when i click a different delivery option and it will for example update the date immediately instead of me refreshing the page  for it to manually update (Don't forget it does this because i put the function in the event listener of the deliveryOptions) 
@@ -57,9 +51,7 @@ export function renderOrderSummary() {
 
     const deliveryOptionId = cartItem.deliveryOptionId;
 
-    const deliveryOption = getDeliveryOption(deliveryOptionId)
-
-    
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
     const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
@@ -166,6 +158,7 @@ export function renderOrderSummary() {
 
       container.remove();
       updateCartQuantity();
+      renderPaymentSummary();
     });
   });
 
@@ -225,6 +218,7 @@ export function renderOrderSummary() {
     element.addEventListener("click", () => {
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 }
