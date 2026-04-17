@@ -6,7 +6,7 @@ import {
   updateDeliveryOption,
 } from "../../data/cart.js";
 
-import { products } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 
 // I used './' because './' means current folder then you find utils folder then you find money.js
 import { formatCurrency } from "../utils/money.js";
@@ -26,7 +26,10 @@ import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
-import { deliveryOptions } from "../../data/deliveryOptions.js";
+import {
+  deliveryOptions,
+  getDeliveryOption,
+} from "../../data/deliveryOptions.js";
 
 hello();
 const today = dayjs();
@@ -50,27 +53,13 @@ export function renderOrderSummary() {
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
 
-    let matchingProduct;
-
-    products.forEach((product) => {
-      //incase you forget the only reason why you can use '.id' is because since you used 'products.forEach((product) => {})' product has becomes a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff  Hope you understand
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
+    const matchingProduct = getProduct(productId);
 
     const deliveryOptionId = cartItem.deliveryOptionId;
 
-    let deliveryOption;
+    const deliveryOption = getDeliveryOption(deliveryOptionId)
 
-    // The cart item only stores the chosen delivery option id, so we loop
-    // through deliveryOptions to find the full object and save it in
-    // deliveryOption. After that, we can use properties like deliveryDays.
-    deliveryOptions.forEach((option) => {
-      if (option.id === deliveryOptionId) {
-        deliveryOption = option;
-      }
-    });
+    
 
     const today = dayjs();
     const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
@@ -239,4 +228,3 @@ export function renderOrderSummary() {
     });
   });
 }
-

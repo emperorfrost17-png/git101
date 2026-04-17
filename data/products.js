@@ -1,3 +1,15 @@
+export function getProduct(productId) {
+  let matchingProduct;
+
+  //incase you forget the only reason why you can use '.id' is because since you used 'products.forEach((product) => {})' product has becomes a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff  Hope you understand
+  products.forEach((product) => {
+    if (product.id === productId) {
+      matchingProduct = product;
+    }
+  });
+  return matchingProduct;
+}
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
