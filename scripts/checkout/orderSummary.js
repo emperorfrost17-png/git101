@@ -29,8 +29,10 @@ import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import {
   deliveryOptions,
   getDeliveryOption,
+  calculateDeliveryDate,
 } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 /*
 I put all the code below in a function so that when for example using the delivery options because i put all the code in a function i can just regenerate the HTML using the function i used (renderOrderSummary) when i click a different delivery option and it will for example update the date immediately instead of me refreshing the page  for it to manually update (Don't forget it does this because i put the function in the event listener of the deliveryOptions) 
@@ -41,6 +43,7 @@ View = It takes the data and displays it on the page e.g checkout.js
 Controller = Runs some code when we interact with the page e.g Event Listener
 */
 
+calculateDeliveryDate(deliveryOptions);
 export function renderOrderSummary() {
   let cartSummaryHTML = "";
   //I created 'cartSummaryHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
@@ -53,9 +56,8 @@ export function renderOrderSummary() {
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
-    const dateString = deliveryDate.format("dddd, MMMM D");
+    
+    const dateString = calculateDeliveryDate(deliveryOption);
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -110,9 +112,8 @@ export function renderOrderSummary() {
   function deliveryOptionsHTML(matchingProduct, cartItem) {
     let html = "";
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
-      const dateString = deliveryDate.format("dddd, MMMM D");
+      
+      const dateString = calculateDeliveryDate(deliveryOption);
 
       //This is a ternary  operator = a shortcut to if{} and else{} statements
       //                              helps to assign a variable based on a condition
@@ -152,11 +153,7 @@ export function renderOrderSummary() {
       const productId = link.dataset.productId;
       removeFromCart(productId);
       console.log(cart);
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`,
-      );
-
-      container.remove();
+      renderOrderSummary();
       updateCartQuantity();
       renderPaymentSummary();
     });
@@ -187,7 +184,6 @@ export function renderOrderSummary() {
       );
 
       const newQuantity = Number(quantityInput.value);
-      updateQuantity(productId, newQuantity);
 
       //This is called an early return so that if it is less than 1 or more than 1000 the code will not run
       if (newQuantity < 1 || newQuantity >= 1000) {
@@ -195,16 +191,9 @@ export function renderOrderSummary() {
         return;
       }
 
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`,
-      );
-      container.classList.remove("is-editing-quantity");
-
-      const quantityLabel = document.querySelector(
-        `.js-quantity-label-${productId}`,
-      );
-
-      quantityLabel.innerHTML = newQuantity;
+      updateQuantity(productId, newQuantity);
+      renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 
@@ -219,6 +208,7 @@ export function renderOrderSummary() {
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
       renderPaymentSummary();
+      renderCheckoutHeader();
     });
   });
 }
