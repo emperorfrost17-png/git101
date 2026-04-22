@@ -1,4 +1,4 @@
-import { formatCurrency } from "../scripts/utils/money.js";
+import { formatCurrency } from "../../scripts/utils/money.js";
 
 //This is to create a Test Suite
 //in case you forgot a Test suite is a collection of related test cases grouped together
