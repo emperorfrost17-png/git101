@@ -1,4 +1,4 @@
-import { formatCurrency } from "../scripts/utils/money.js";
+import { formatCurrency } from "../../scripts/utils/money.js";
 
 //This is is a basic test case because 2095 is a normal number.
 console.log('test suite: formatCurrency')
