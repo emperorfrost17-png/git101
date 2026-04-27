@@ -41,7 +41,7 @@ function isWeekend(date) {
 }
 
 export function calculateDeliveryDate(deliveryOption) {
- // Start with the number of delivery days from the selected option.
+  // Start with the number of delivery days from the selected option.
   let remainingDays = deliveryOption.deliveryDays;
 
   // Start counting from today.
@@ -62,4 +62,17 @@ export function calculateDeliveryDate(deliveryOption) {
   const dateString = deliveryDate.format("dddd, MMMM D");
 
   return dateString;
+}
+
+// Check whether the passed delivery option id exists in deliveryOptions.
+export function validDeliveryOption(deliveryOptionId) {
+  let found = false;
+
+  deliveryOptions.forEach((option) => {
+    if (option.id === deliveryOptionId) {
+      found = true;
+    }
+  });
+
+  return found;
 }

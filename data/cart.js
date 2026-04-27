@@ -1,4 +1,5 @@
 //The reason why we just use the id is because when using id the id will find the rest of the other details like price rating and image etc. That is why we just only use id and quantity this is called normalizing the data
+import { validDeliveryOption } from "./deliveryOptions.js";
 export let cart;
 loadFromStorage();
 
@@ -88,6 +89,13 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
     }
   });
 
+  if (!matchingItem) {
+    return;
+  }
+  // Stop here if the passed delivery option id is not one of the valid options.
+  if (!validDeliveryOption(deliveryOptionId)) {
+    return;
+  }
   matchingItem.deliveryOptionId = deliveryOptionId;
 
   saveToStorage();
