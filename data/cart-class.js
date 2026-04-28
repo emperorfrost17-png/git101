@@ -12,20 +12,21 @@ import { validDeliveryOption } from "./deliveryOptions.js";
 //For PascalCase you start every word with a capital letter including the first word
 class Cart {
   cartItems;
-
-  localStorageKey;
+  //I added '#' to make the property private (localStorageKey) so that it can only be used inside this class.
+  //Without '#' makes it a public propery which means it can be used anywhere even outside the class.
+   #localStorageKey;
 
   //everytime we generate an object it will run the code inside here
   constructor(localStorageKey) {
-    this.localStorageKey = localStorageKey;
+    this.#localStorageKey = localStorageKey;
 
-    this.loadFromStorage();
+    this.#loadFromStorage();
   }
-
-  loadFromStorage() {
+//You can also make a method (a method is a function in a class or OOP) private by adding '#'
+  #loadFromStorage() {
     // "this" means the object that is calling this method, so here this.cartItems means cart.cartItems.
     //It is better to use 'this' incase if i want to change the object name
-    this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
 
     if (!this.cartItems) {
       this.cartItems = [
@@ -44,7 +45,7 @@ class Cart {
   }
 
   saveToStorage() {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
   }
   addToCart(productId, quantity) {
     let matchingItem;
