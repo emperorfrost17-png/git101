@@ -11,11 +11,11 @@ import { validDeliveryOption } from "./deliveryOptions.js";
 //It is advisable to use PascalCase when naming for things that generate objects in OOP
 //For PascalCase you start every word with a capital letter including the first word
 class Cart {
-  cartItems = undefined;
+  cartItems;
 
-  localStorageKey = undefined;
+  localStorageKey;
 
-  //everytime we generate an object it wil the code inside here
+  //everytime we generate an object it will run the code inside here
   constructor(localStorageKey) {
     this.localStorageKey = localStorageKey;
 
@@ -128,9 +128,10 @@ class Cart {
 // Without 'new', JavaScript will give an error because classes cannot be called like normal functions.
 
 //each object we generate from a class is called an instance of the class
-//the value inside the parameters here are saved inside of the value of the parameter of the construtor
-const cart = new Cart('cart-oop');
-const businessCart = new Cart('cart-business');
+// The value passed into new Cart('cart-oop') goes into the constructor parameter localStorageKey.
+
+const cart = new Cart("cart-oop");
+const businessCart = new Cart("cart-business");
 
 console.log(cart);
 console.log(businessCart);
