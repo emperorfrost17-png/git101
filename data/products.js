@@ -9,7 +9,50 @@ export function getProduct(productId) {
   });
   return matchingProduct;
 }
+//This is called converting an object into a class
+class Products {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
 
+  constructor(productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+}
+const product1 = new Products(
+  {
+    id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+    image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+    name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+    rating: {
+      stars: 4.5,
+      count: 87,
+    },
+    priceCents: 1090,
+    keywords: ["socks", "sports", "apparel"],
+  },
+  {
+    id: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+    image: "images/products/intermediate-composite-basketball.jpg",
+    name: "Intermediate Size Basketball",
+    rating: {
+      stars: 4,
+      count: 127,
+    },
+    priceCents: 2095,
+    keywords: ["sports", "basketballs"],
+  },
+);
+console.log(product1);
+
+// .map() goes through each item in the array and returns a new array with each item changed or converted.
+//The parameter(productDetails) will take each value in the array and run the function
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -501,4 +544,7 @@ export const products = [
     },
     priceCents: 2000,
   },
-];
+].map((productDetails) => {
+  return new Products(productDetails);
+});
+console.log(products)
