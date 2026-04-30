@@ -36,31 +36,34 @@ class Products {
   getPrice() {
     return `$${formatCurrency(this.priceCents)}`;
   }
+  
+  extraInfoHTML() {
+    return ``;
+  }
 }
-const product1 = new Products(
-  {
-    id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-    image: "images/products/athletic-cotton-socks-6-pairs.jpg",
-    name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
-    rating: {
-      stars: 4.5,
-      count: 87,
-    },
-    priceCents: 1090,
-    keywords: ["socks", "sports", "apparel"],
-  },
-  {
-    id: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-    image: "images/products/intermediate-composite-basketball.jpg",
-    name: "Intermediate Size Basketball",
-    rating: {
-      stars: 4,
-      count: 127,
-    },
-    priceCents: 2095,
-    keywords: ["sports", "basketballs"],
-  },
-);
+
+//extends is what you use to inherit a class
+//For example here the Clothing class will inherit all the properties and methods of class Products
+class Clothing extends Products {
+  sizeChartLink;
+
+  constructor(productDetails) {
+    //super() calls the constructor of the parent's class which is Products
+
+    //don't forget to add the parameter when calling super() but that is f there is a parameter
+    super(productDetails);
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+
+  extraInfoHTML() {
+    //You use this to get a method or class to later overide/Change code inside
+    //For example i used super to get extraInfoHTML() method
+    //super.extraInfoHTML()
+    return `
+    <a href="${this.sizeChartLink}" target="_blank">Size chart</a>
+    `;
+  }
+}
 
 
 // .map() loops through the array and builds a new array.
@@ -558,6 +561,8 @@ export const products = [
     priceCents: 2000,
   },
 ].map((productDetails) => {
+  if (productDetails.type === "clothing") {
+    return new Clothing(productDetails);
+  }
   return new Products(productDetails);
 });
-
