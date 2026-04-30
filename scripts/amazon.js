@@ -31,14 +31,14 @@ products.forEach((product) => {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars * 10}.png">
+              src="${product.getStarsUrl()}">
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-           $${formatCurrency(product.priceCents)}<!--.toFixed(2) makes the price have two decimal digits for example 10.9 = 10.90-->
+           ${product.getPrice()}<!--.toFixed(2) makes the price have two decimal digits for example 10.9 = 10.90-->
           </div>
 
           <div class="product-quantity-container">

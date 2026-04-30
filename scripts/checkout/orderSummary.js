@@ -74,8 +74,11 @@ export function renderOrderSummary() {
             <div class="product-name js-product-name-${matchingProduct.id}">
               ${matchingProduct.name}
             </div>
+            
+            <!-- matchingProduct comes from getProduct(), and that returns a Products class object, so it can use getPrice(). -->
+
             <div class="product-price js-product-price-${matchingProduct.id}">
-              $${formatCurrency(matchingProduct.priceCents)}
+              ${matchingProduct.getPrice()}
             </div>
             <div class="product-quantity js-product-quantity-${matchingProduct.id}">
               <span>

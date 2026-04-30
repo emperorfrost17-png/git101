@@ -1,7 +1,11 @@
+import { formatCurrency } from "../scripts/utils/money.js";
+
 export function getProduct(productId) {
   let matchingProduct;
 
-  //incase you forget the only reason why you can use '.id' is because since you used 'products.forEach((product) => {})' product has becomes a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff  Hope you understand
+  // getProduct(productId) searches through the products array.
+  // product is each individual item in the array during the loop.
+  // If product.id matches the productId we are looking for, we save that product and return it.
   products.forEach((product) => {
     if (product.id === productId) {
       matchingProduct = product;
@@ -23,6 +27,14 @@ class Products {
     this.name = productDetails.name;
     this.rating = productDetails.rating;
     this.priceCents = productDetails.priceCents;
+  }
+
+  getStarsUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+
+  getPrice() {
+    return `$${formatCurrency(this.priceCents)}`;
   }
 }
 const product1 = new Products(
@@ -49,10 +61,11 @@ const product1 = new Products(
     keywords: ["sports", "basketballs"],
   },
 );
-console.log(product1);
 
-// .map() goes through each item in the array and returns a new array with each item changed or converted.
-//The parameter(productDetails) will take each value in the array and run the function
+
+// .map() loops through the array and builds a new array.
+// Here, each productDetails object is turned into a Products class object.
+// So instead of ending with plain objects, products becomes an array of Products instances.
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -547,4 +560,4 @@ export const products = [
 ].map((productDetails) => {
   return new Products(productDetails);
 });
-console.log(products)
+
