@@ -36,7 +36,7 @@ class Products {
   getPrice() {
     return `$${formatCurrency(this.priceCents)}`;
   }
-  
+
   extraInfoHTML() {
     return ``;
   }
@@ -64,7 +64,26 @@ class Clothing extends Products {
     `;
   }
 }
+/*
 
+//New Date() is a built in class related to the date
+const date = new Date();
+console.log(date);
+//this is to show the time
+console.log(date.toLocaleTimeString());
+
+*/
+
+/*
+function logThis() {
+  console.log(this);
+}
+//the first value of entered in .call() will be the value will be for the this value which will become hello
+//don't forget the .call also runs the function
+//this is undefined in the regular function (not arraow function) that is why i could change it using .call()
+logThis.call("hello");
+logThis();
+*/
 
 // .map() loops through the array and builds a new array.
 // Here, each productDetails object is turned into a Products class object.
