@@ -14,7 +14,9 @@ export function getProduct(productId) {
   return matchingProduct;
 }
 //This is called converting an object into a class
-class Products {
+
+//Private properties cannot be inherited don't forget that
+export class Products {
   id;
   image;
   name;
@@ -44,7 +46,9 @@ class Products {
 
 //extends is what you use to inherit a class
 //For example here the Clothing class will inherit all the properties and methods of class Products
-class Clothing extends Products {
+
+//Private properties cannot be inherited don't forget that
+export class Clothing extends Products {
   sizeChartLink;
 
   constructor(productDetails) {
@@ -64,12 +68,31 @@ class Clothing extends Products {
     `;
   }
 }
+export class Appliances extends Products {
+  instructionsLink;
+  warrantyLink;
+  constructor(productDetails) {
+    super(productDetails);
+    this.instructionsLink = productDetails.instructionsLink;
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+  extraInfoHTML() {
+    return `
+    <a href="${this.instructionsLink}" target="_blank">Instructions</a>
+    <a href="${this.warrantyLink}" target="_blank">Warranty</a>
+    `;
+  }
+}
+
+
 /*
 
-//New Date() is a built in class related to the date
+New Date() is a built in class related to the date
+
 const date = new Date();
 console.log(date);
-//this is to show the time
+
+this is to show the time
 console.log(date.toLocaleTimeString());
 
 */
@@ -78,9 +101,11 @@ console.log(date.toLocaleTimeString());
 function logThis() {
   console.log(this);
 }
-//the first value of entered in .call() will be the value will be for the this value which will become hello
-//don't forget the .call also runs the function
-//this is undefined in the regular function (not arraow function) that is why i could change it using .call()
+the first value of entered in .call() will be the value will be for the this value which will become hello
+
+don't forget the .call also runs the function
+
+this is undefined in the regular function (not arraow function) that is why i could change it using .call()
 logThis.call("hello");
 logThis();
 */
@@ -134,6 +159,9 @@ export const products = [
     },
     priceCents: 1899,
     keywords: ["toaster", "kitchen", "appliances"],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
   },
   {
     id: "3ebe75dc-64d2-4137-8860-1f5a963e534b",
@@ -268,6 +296,9 @@ export const products = [
     },
     priceCents: 3074,
     keywords: ["water boiler", "appliances", "kitchen"],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
   },
   {
     id: "6b07d4e7-f540-454e-8a1e-363f25dbae7d",
@@ -481,6 +512,9 @@ export const products = [
     },
     priceCents: 2250,
     keywords: ["coffeemakers", "kitchen", "appliances"],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
   },
   {
     id: "02e3a47e-dd68-467e-9f71-8bf6f723fdae",
@@ -525,6 +559,9 @@ export const products = [
     },
     priceCents: 10747,
     keywords: ["food blenders", "kitchen", "appliances"],
+    type: "appliance",
+    instructionsLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
   },
   {
     id: "36c64692-677f-4f58-b5ec-0dc2cf109e27",
@@ -582,6 +619,8 @@ export const products = [
 ].map((productDetails) => {
   if (productDetails.type === "clothing") {
     return new Clothing(productDetails);
+  } else if (productDetails.type === "appliance") {
+    return new Appliances(productDetails)
   }
   return new Products(productDetails);
 });
