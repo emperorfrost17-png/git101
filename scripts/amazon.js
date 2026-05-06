@@ -10,16 +10,19 @@
 
 import { cart, addToCart, calculateCartQuantity } from "../data/cart.js"; //I used '../' because 'cart.js' was outside the script folder when it is like that '../' is used to indicate that the file is not in the same folder as the export folder example script
 
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 
 import { formatCurrency } from "./utils/money.js";
 
-let productsHTML = "";
-//I created 'productsHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
+loadProducts(renderProductsGrid);
 
-products.forEach((product) => {
-  //incase you forget the only reason why you can use '.id or .rating or .name' is because since you used 'products.forEach((product) => {})' product has become a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff.  Hope you understand
-  productsHTML += `<div class="product-container">
+function renderProductsGrid() {
+  let productsHTML = "";
+  //I created 'productsHTML' so that everytime we loop through the cart it will add the  HTML below inside the variable
+
+  products.forEach((product) => {
+    //incase you forget the only reason why you can use '.id or .rating or .name' is because since you used 'products.forEach((product) => {})' product has become a variable for each individual object in the products arrays that is why you can use product.id or product.quantity and stuff.  Hope you understand
+    productsHTML += `<div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
               src="${product.image}">
@@ -70,46 +73,47 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>`;
-});
-
-document.querySelector(".js-products-grid").innerHTML = productsHTML;
-
-updateCartQuantity();
-
-function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
-  document.querySelector(".js-cart-quantity").innerHTML = `${cartQuantity}`;
-}
-
-const addedMessageTimeout = {};
-
-document.querySelectorAll(".js-add-to-cart").forEach((button) => {
-  button.addEventListener("click", () => {
-    const productId = button.dataset.productId; //makes the property camelCase even though i wrote product-name it joins it and write it in camel Case
-    const quantitySelector = document.querySelector(
-      `.js-quantity-selector-${productId}`,
-    );
-    const quantity = Number(quantitySelector.value);
-    addToCart(productId, quantity);
-
-    updateCartQuantity();
-
-    const addedToCart = document.querySelector(
-      `.js-added-to-cart-${productId}`,
-    );
-
-    addedToCart.classList.add("added-to-cart-message");
-
-    // Use [productId] because productId is a variable; this stores a separate timeout for each product id.
-    // and [productId] also mean “Use the value inside productId as the property name"
-    const previousTimeout = addedMessageTimeout[productId];
-    if (previousTimeout) {
-      clearTimeout(previousTimeout);
-    }
-
-    const timeoutId = setTimeout(() => {
-      addedToCart.classList.remove("added-to-cart-message");
-    }, 1000);
-    addedMessageTimeout[productId] = timeoutId;
   });
-});
+
+  document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+  updateCartQuantity();
+
+  function updateCartQuantity() {
+    const cartQuantity = calculateCartQuantity();
+    document.querySelector(".js-cart-quantity").innerHTML = `${cartQuantity}`;
+  }
+
+  const addedMessageTimeout = {};
+
+  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = button.dataset.productId; //makes the property camelCase even though i wrote product-name it joins it and write it in camel Case
+      const quantitySelector = document.querySelector(
+        `.js-quantity-selector-${productId}`,
+      );
+      const quantity = Number(quantitySelector.value);
+      addToCart(productId, quantity);
+
+      updateCartQuantity();
+
+      const addedToCart = document.querySelector(
+        `.js-added-to-cart-${productId}`,
+      );
+
+      addedToCart.classList.add("added-to-cart-message");
+
+      // Use [productId] because productId is a variable; this stores a separate timeout for each product id.
+      // and [productId] also mean “Use the value inside productId as the property name"
+      const previousTimeout = addedMessageTimeout[productId];
+      if (previousTimeout) {
+        clearTimeout(previousTimeout);
+      }
+
+      const timeoutId = setTimeout(() => {
+        addedToCart.classList.remove("added-to-cart-message");
+      }, 1000);
+      addedMessageTimeout[productId] = timeoutId;
+    });
+  });
+}

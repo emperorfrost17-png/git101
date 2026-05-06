@@ -84,7 +84,6 @@ export class Appliances extends Products {
   }
 }
 
-
 /*
 
 New Date() is a built in class related to the date
@@ -113,6 +112,34 @@ logThis();
 // .map() loops through the array and builds a new array.
 // Here, each productDetails object is turned into a Products class object.
 // So instead of ending with plain objects, products becomes an array of Products instances.
+
+export let products = [];
+
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", () => {
+    //This is an asynchronous code
+
+    //that is why i created this event listener with 'load' because i need to wait for the response load before running the code
+
+    //This used to access the data returned by the backend server after an HTTP request has been completed
+    products = JSON.parse(xhr.response).map((productDetails) => {
+      if (productDetails.type === "clothing") {
+        return new Clothing(productDetails);
+      } else if (productDetails.type === "appliance") {
+        return new Appliances(productDetails);
+      }
+      return new Products(productDetails);
+    });
+    console.log("load products");
+    fun();
+  });
+
+  xhr.open("GET", "https://supersimplebackend.dev/products");
+  xhr.send();
+}
+loadProducts();
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -620,7 +647,8 @@ export const products = [
   if (productDetails.type === "clothing") {
     return new Clothing(productDetails);
   } else if (productDetails.type === "appliance") {
-    return new Appliances(productDetails)
+    return new Appliances(productDetails);
   }
   return new Products(productDetails);
 });
+*/
