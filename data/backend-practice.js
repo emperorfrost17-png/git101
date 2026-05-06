@@ -19,7 +19,7 @@ xhr.addEventListener("load", () => {
 
 //'GET' is for getting the information from the backend
 //There is also 'POST', 'PUT', 'DELETE'
-xhr.open("GET", "https://supersimplebackend.dev/not-supported");
+xhr.open("GET", "https://supersimplebackend.dev");
 /*
 After the request has been initialized and configured with .open(), calling .send() is the final step that physically sends the request across the internet to the specified URL
 */
