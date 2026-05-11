@@ -132,7 +132,9 @@ export function loadProducts(fun) {
       return new Products(productDetails);
     });
     console.log("load products");
-    fun();
+    if (fun) {
+      fun();
+    }
   });
 
   xhr.open("GET", "https://supersimplebackend.dev/products");

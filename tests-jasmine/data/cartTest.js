@@ -4,8 +4,17 @@ import {
   loadFromStorage,
   updateDeliveryOption,
 } from "../../data/cart.js";
+import { loadProducts } from "../../data/products.js";
 
 describe("test suite: addToCart", () => {
+  // beforeAll runs once before every test in this describe block.
+  // loadProducts is asynchronous, so Jasmine gives us `done`.
+  // Calling done() tells Jasmine the products are loaded and the tests can start.
+  beforeAll((done) => {
+    loadProducts(() => {
+      done();
+    });
+  });
   beforeEach(() => {
     //This is to mock localStorage.setIem
     spyOn(localStorage, "setItem");
@@ -148,6 +157,5 @@ describe("test suite: addToCart", () => {
     expect(cart[0].quantity).toEqual(2);
     expect(cart[0].deliveryOptionId).toEqual("1");
     expect(localStorage.setItem).toHaveBeenCalledTimes(0);
-
   });
 });
