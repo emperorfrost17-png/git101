@@ -2,8 +2,17 @@ import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
 import { loadProducts } from "../../data/products.js";
 
 import { loadFromStorage, cart, removeFromCart } from "../../data/cart.js";
+import { loadProducts } from "../../data/products.js";
 
 describe("test suite: renderOrderSummary", () => {
+  // beforeAll runs once before every test in this describe block.
+  // loadProducts is asynchronous, so Jasmine gives us `done`.
+  // Calling done() tells Jasmine the products are loaded and the tests can start.
+  beforeAll((done) => {
+    loadProducts(() => {
+      done();
+    });
+  });
   afterEach(() => {
     document.querySelector(".js-test-container").innerHTML = ``;
   });

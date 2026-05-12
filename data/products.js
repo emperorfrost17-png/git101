@@ -131,10 +131,17 @@ export function loadProducts(fun) {
       }
       return new Products(productDetails);
     });
+<<<<<<< HEAD
     if(fun) {
       fun();
     }
     
+=======
+    console.log("load products");
+    if (fun) {
+      fun();
+    }
+>>>>>>> 8b4eb4133962216a869d42e3bf9e3f8169329991
   });
 
   xhr.open("GET", "https://supersimplebackend.dev/products");
