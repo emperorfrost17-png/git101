@@ -131,11 +131,16 @@ export function loadProducts(fun) {
       }
       return new Products(productDetails);
     });
-    console.log("load products");
-    fun();
+    if(fun) {
+      fun();
+    }
+    
   });
 
   xhr.open("GET", "https://supersimplebackend.dev/products");
+  /*
+After the request has been initialized and configured with .open(), calling .send() is the final step that physically sends the request across the internet to the specified URL
+*/
   xhr.send();
 }
 loadProducts();
