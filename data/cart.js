@@ -100,3 +100,24 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
 
   saveToStorage();
 }
+
+export function loadCart(fun) {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", () => {
+    console.log(xhr.response)
+  
+    
+
+    if(fun) {
+      fun();
+    }
+    
+
+  });
+
+  xhr.open("GET", "https://supersimplebackend.dev/cart");
+  /*
+After the request has been initialized and configured with .open(), calling .send() is the final step that physically sends the request across the internet to the specified URL
+*/
+  xhr.send();
+}
