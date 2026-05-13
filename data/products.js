@@ -115,6 +115,40 @@ logThis();
 
 export let products = [];
 
+export function loadProductsFetch() {
+  // this fetch basically the same as:
+  //const xhr = new XMLHttpRequest();
+  //at default fetch does 'GET' that is why I only put the url
+  //so fetch is for Handling HTTP request better
+
+  // fetch() returns a Promise
+  // when the request finishes, .then() receives the result
+  // response is just the variable that stores that result
+  const promise = fetch("https://supersimplebackend.dev/products")
+    .then((response) => {
+      //.json this gives the data attached to the response
+      //I used return because the response is asynchronous so i will wait for it to finish before going to the next step
+      return response.json();
+    })
+    .then((productsData) => {
+      products = productsData.map((productDetails) => {
+        if (productDetails.type === "clothing") {
+          return new Clothing(productDetails);
+        } else if (productDetails.type === "appliance") {
+          return new Appliances(productDetails);
+        }
+        return new Products(productDetails);
+      });
+    });
+  return promise;
+}
+//You can return a promise out of a function and keep attaching more steps to that promise
+
+/*loadProductsFetch().then(() => {
+  console.log('next step')
+});
+*/
+
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
@@ -132,11 +166,9 @@ export function loadProducts(fun) {
       return new Products(productDetails);
     });
 
-    if(fun) {
+    if (fun) {
       fun();
     }
-    
-
   });
 
   xhr.open("GET", "https://supersimplebackend.dev/products");

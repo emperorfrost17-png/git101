@@ -1,7 +1,7 @@
 import { renderCheckoutHeader } from "./checkout/checkoutHeader.js";
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-import { loadProducts } from "../data/products.js";
+import { loadProducts, loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/cart.js";
 //This runs all the code inside the file without importing anything
 //import "../data/cart-class.js";
@@ -27,18 +27,14 @@ import { loadCart } from "../data/cart.js";
 // The order of the results matches the order of the Promises
 
 Promise.all([
-  new Promise((resolve) => {
-    loadProducts(() => {
-      resolve("value 1");
-    });
-  }),
+  loadProductsFetch(),
   new Promise((resolve) => {
     loadCart(() => {
-      resolve('Wo mami Schw3');
+      resolve("Wo mami Schw3");
     });
   }),
 ]).then((value) => {
-  console.log(value)
+  console.log(value);
   renderCheckoutHeader();
   renderOrderSummary();
   renderPaymentSummary();
