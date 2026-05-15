@@ -9,6 +9,28 @@ import { loadCart } from "../data/cart.js";
 //This runs all the code inside the file without importing anything
 //import "../data/backend-practice.js";
 
+//async makes a function return a promise
+async function loadPage() {
+  //This return is kind of like resolve() the result will be passed in the then() parameter
+
+  //await lets us write/run asynchronous code like normal/synchronous code
+  //So now it will wait for loadProductsFetch to load from the backend before going to the next step
+  //Async await can only be used with promises it can't work with a callback
+  await loadProductsFetch();
+
+  const value = await new Promise((resolve) => {
+    loadCart(() => {
+      //the resolve() value gets returned in an async function that is why i did const value = ....
+      resolve("Wo mami Schw3");
+    });
+  });
+ 
+
+  renderCheckoutHeader();
+  renderOrderSummary();
+  renderPaymentSummary();
+}
+loadPage();
 //Promise class is a better way of handling asynchronous code or function
 //It also also allows us to have as many steps as we want
 
@@ -26,6 +48,7 @@ import { loadCart } from "../data/cart.js";
 // The results come back in an array
 // The order of the results matches the order of the Promises
 
+/*
 Promise.all([
   loadProductsFetch(),
   new Promise((resolve) => {
@@ -39,6 +62,7 @@ Promise.all([
   renderOrderSummary();
   renderPaymentSummary();
 });
+*/
 
 // resolve() finishes the Promise and can send a value out
 // then() receives that value in the next step
